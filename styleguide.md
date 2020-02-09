@@ -90,14 +90,14 @@ class Email {
     }
 
     public static fromString = (string: string): Email | null => {
-        if (isEmail(string)) // some validation
+        if (isEmail(string)) // some validation 
             return new Email(string)
         else 
             return null
     } 
 
     public static toString = this.email // Since we have readonly it can not be
-    mutated anyway.
+    // mutated anyway.
 }
 ```
 
@@ -107,17 +107,27 @@ does not conform to the correct format.
 
 Also, having small classes makes it impossible to mix up arguments. 
 ```typescript
-const myFunction = (str: string, email: string, whateverelse: string)
+const createUser = (name: string, email: string, password: string)
 ```
+In `createUser`, you can easily mix up the argument list. Alternatively:
 
-In `myFunction`, you can easily mix up the argument list and create errors.
 ```typescript
-const myOtherFunction = (str: string, email: Email, whateverelse: string)
+const createOtherUser = (name: Name, email: Email, password: Password)
 ```
-In `myOtherFunction`, mixing up order is a lot harder.
+In `createOtherUser`, feeding the wrong argument is much harder.
 
-For those with a background in functional programming, this is the Typescript
+For those with a background in functional programming, this method the Typescript
 equivalent of newtype wrappers in Haskell.
+
+If you find this approach to be too much boilerplate, you can also use objects as 
+named arguments instead.
+
+```typescript
+const createUser = ({name, email,password}: {name: string, email: string, password: string})
+```
+
+Which approach to use depends on how you acquire the data and if you wish to run validation on it
+beforehand.
 
 ### Use readonly 
 
