@@ -173,12 +173,12 @@ With a few exceptions, such as JSON and HTML, avoid abbreviations as much as
 possible.
 
 Motivation:  Mathematicians used abbreviations to quickly get their ideas out of
-their head. They were not made to be read by others. The goal is to make code
-readable by others and avoid cognitive overhead. Modern IDEs and editors provide
+their head. They were not made to be read by others. As software engineers, the goal 
+is to write readable and maintainable readable code. Modern IDEs and editors provide
 us with intellisense and can suggest file names thus the speed gained by using
 abbreviations is negligible. 
 
-Also, when we use classes as modules, method names become short even without
+When we use classes as modules, method names become short even without
 abbreviations because context can be deduced from imports and the class it lives
 in. So before with functions we had `createUserFromDb` which instead becomes
 `Database.createUser`.
