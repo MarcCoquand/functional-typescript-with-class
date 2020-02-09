@@ -5,6 +5,15 @@ It is controversial, because the core idea is to base everything around classes
 which does not sound very functional in style.  However, after trying various approaches
 this has been the approach that provides the best, most readable, ergonomics.
 
+The core inspiration of this style guide is:
+
+1. Typed functional programming is about:
+ - Using types to define a data structure best fit for a certain data.
+ - Defining operations on that data structure which morphs it to a different structure
+ - Immutability is prefered
+2. Base around how Javascript creates it's internal data structures, such as array
+3. Good code creates small libraries, not frameworks, that model the business domain.
+
 ## Modules as classes 
 
 ### One class per file centered around a type
@@ -52,23 +61,30 @@ Thus, using a class provides the best ergonomics when it comes to imports, even
 for functional programming and they function similar to modules in Elm or
 Haskell.
 
-3.  In Javascript, the way we implement functions such as `map`, `filter`, is
+3.  In Javascript, the way we implement functions such as `map` or `filter`, is
     through method chaining. Using classes is 
     the current approach of Javascript for functional style programming.
 
 4.  Classes are great for namespacing and dot syntax is arguably one
-    of the best things of OOP. Today, modern module bundlers optimize away
+    of the best things from OOP. Today, modern module bundlers optimize away
     unused functions, thus the need for explicitly importing certain functions is
     gone.  Having namespacing means that we can write functions based on the
     context it is used, `createResource` becomes `create` and when used in other
     files becomes `Resource.create`. It makes the files much less noisy while
-    still retaining context in other files.
+    still retaining context in other files. This reduces the need for antipatterns
+    such as abbreviations, which hurt readability.
+ 
+ 5. While is might seem like this approach is radically different from how code is written, 
+    we find that this is the approach being used by Javascript internal libraries. Thus, 
+    this approach is actually more in line with how Javascript libraries are being written
+    today.
 
 
 ### Let the class grow before deciding to refactor
 
-Since classes revolve around a single type, let the class grow before
-deciding how to refactor. When you find that the class is
+Contrary to popular wisdom, have large classes to start. Since classes 
+revolve around a single type, letting the class grow before
+deciding how to refactor means you can create better structures. When you find that the class is
 unreasonably big, find a type parameter that shows up in a lot of methods and
 create a new class around that type. It might sound controversial but I dare you
 to try it.
@@ -85,7 +101,7 @@ Example:
 class Email {
     private readonly email: string
 
-    constructor(string: string) {
+    private constructor(string: string) {
         this.email = string
     }
 
@@ -101,11 +117,13 @@ class Email {
 }
 ```
 
-Motivation: Hiding the constructor and instead exposing static construction
+Motivation: 
+
+1. Hiding the constructor and instead exposing static construction
 methods allows us to validate and then return null instead of an object if it
 does not conform to the correct format. 
 
-Also, having small classes makes it impossible to mix up arguments. 
+2. Having small classes with hidden constructors makes it impossible to mix up arguments. 
 ```typescript
 const createUser = (name: string, email: string, password: string)
 ```
@@ -114,9 +132,9 @@ In `createUser`, you can easily mix up the argument list. Alternatively:
 ```typescript
 const createOtherUser = (name: Name, email: Email, password: Password)
 ```
-In `createOtherUser`, feeding the wrong argument is much harder.
+In `createOtherUser`, feeding arguments in the wrong order yields errors.
 
-For those with a background in functional programming, this method the Typescript
+For those with a background in functional programming, this method is the Typescript
 equivalent of newtype wrappers in Haskell.
 
 If you find this approach to be too much boilerplate, you can also use objects as 
@@ -125,13 +143,18 @@ named arguments instead.
 ```typescript
 const createUser = ({name, email,password}: {name: string, email: string, password: string})
 ```
-
-Which approach to use depends on how you acquire the data and if you wish to run validation on it
-beforehand.
+The approach to use depends on how you acquire the data. If your email comes from 
+a request then you need to validate it beforehand anyway, thus using a class makes sense.
 
 ### Use readonly 
 
 All attributes should use readonly.
+
+```
+class Email {
+    private readonly email: string
+}
+```
 
 ### Avoid methods with no arguments
 
@@ -156,7 +179,7 @@ performs an effect and are non-deterministic.
 
 ### Prefer immutable classes
 
-Classes should almost always be immutable.  Immutable code is much more
+Classes should almost always be immutable. Immutable code is much more
 predictable. Therefore, every method that normally would mutate the class should
 instead return a new instance.
 
