@@ -35,7 +35,8 @@ Motivation:
 ```elm 
 import Email exposing (Email)
 
--- In code Email.fromString("myEmail@email.com") 
+-- In code 
+Email.fromString("myEmail@email.com") 
 ``` 
 
 This is not possible in
