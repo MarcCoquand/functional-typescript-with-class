@@ -2,7 +2,7 @@
 
 This document presents how functional programming should be done in Typescript.
 It is controversial, because the core idea is to base everything around classes
-which might seem counterintuitive.  However, after trying various approaches
+which does not sound very functional in style.  However, after trying various approaches
 this has been the approach that provides the best, most readable, ergonomics.
 
 ## Modules as classes 
