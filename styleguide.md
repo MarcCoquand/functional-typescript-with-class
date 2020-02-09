@@ -11,8 +11,12 @@ The core inspiration of this style guide is:
  - Using types to define a data structure best fit for a certain data.
  - Defining operations on that data structure which morphs it to a different structure
  - Immutability is prefered
-2. Base around how Javascript creates it's internal data structures, such as array
-3. Good code creates small libraries, not frameworks, that model the business domain.
+ - Higher order functions and currying
+ - Purity
+2. Javascript own internal data structures, such as array
+3. Good code is about creating small libraries, not frameworks, that model the business domain.
+4. Using methods as functions with an implicit argument.
+5. Using static methods as functions.
 
 ## Modules as classes 
 
@@ -74,10 +78,28 @@ Haskell.
     still retaining context in other files. This reduces the need for antipatterns
     such as abbreviations, which hurt readability.
  
- 5. While is might seem like this approach is radically different from how code is written, 
-    we find that this is the approach being used by Javascript internal libraries. Thus, 
+ 5. While is might seem like this approach is foreign from how code is written, 
+    we find that this is the approach being used by Javascript internal libraries. Also,
+    libraries like immutable js use a similar structere. Thus, 
     this approach is actually more in line with how Javascript libraries are being written
-    today.
+    today and is probably the most ergonomic way to do Functional programming.
+
+6. Other functional languages provide a form of pipe operator to chain multiple operations. 
+   In Javascript, this pipe operator is instead replaced by method chaining. In other programming
+   languages, like Elm, we would provide the last argument as the one being chained. 
+   ```elm
+   doStuff = 
+    myVal
+     |> firstOperation arg1
+     |> secondOperation arg2
+   ```
+   In Typescript
+   ```typescript
+   const doStuff =
+    myVal
+     .firstOperation(arg1)
+     .secondOperation(arg2)
+    ```
 
 
 ### Let the class grow before deciding to refactor
@@ -252,6 +274,5 @@ unions](https://www.typescriptlang.org/docs/handbook/advanced-types.html#discrim
 FAQ:
 
 * What if there is no type for my file to revolve around? Sometimes we do not
-  have a specific type which the module revolves around, such as when we
-  initialise our application. In this case, break the rule and expose a
-  function. This is not Java.
+  have a specific type which the module revolves around, for instance a createApp function. 
+  In this case, break the rule and expose function. This is not Java. Only a sith deals in absolutes.
