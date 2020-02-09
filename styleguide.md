@@ -1,4 +1,4 @@
-# Functional Typescript with Class. A style guide.
+# Functional Typescript with Class. A style guide. Draft.
 
 This document presents how functional programming should be done in Typescript.
 It is controversial, because the core idea is to base everything around classes
@@ -9,10 +9,17 @@ this has been the approach that provides the best, most readable, ergonomics.
 
 ### One class per file centered around a type
 
-Each file should ideally have on class. The class should have a type definition,
+Each file should ideally have one class it is centered around. These classes function the same as modules
+in other functional programming languages. The class should have a type definition,
 which should be used by every method of that class. If a method does not contain
 the class in it's return type or parameters, it does not belong in that file
 unless it is a private helper function used by the other methods.
+
+Examples: 
+Javascript Arrays
+[Decoders](https://www.npmjs.com/package/elm-decoders), centers around the type function
+`(value: any) => T`.
+[immutable.js](https://immutable-js.github.io/immutable-js/docs/#/)
 
 Motivation:
 
@@ -111,6 +118,10 @@ In `myOtherFunction`, mixing up order is a lot harder.
 For those with a background in functional programming, this is the Typescript
 equivalent of newtype wrappers in Haskell.
 
+### Use readonly 
+
+All attributes should use readonly.
+
 ### Avoid methods with no arguments
 
 If a method takes no parameters, prefer a static method that takes the class as
@@ -144,6 +155,8 @@ class Set<T> {
         new Set(...)
 }
 ```
+
+## Other
 
 ### File naming 
 
